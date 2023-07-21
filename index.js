@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = __importDefault(require("puppeteer"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 function delay(time) {
     return new Promise(function (resolve) {
         setTimeout(resolve, time);
@@ -20,7 +22,6 @@ function delay(time) {
 }
 (() => __awaiter(void 0, void 0, void 0, function* () {
     // Launch the browser
-    console.log('start');
     //   const response = await axios.post(
     //     'https://www.theconcert.com/rest/users/login',
     //     {
@@ -48,7 +49,7 @@ function delay(time) {
     //   // Create a page
     const page = yield browser.newPage();
     //   // Go to your site
-    yield page.goto(`https://www.theconcert.com/concert/2427`);
+    yield page.goto(`https://www.theconcert.com/concert/${process.env.ID_CONCERT}`);
     // Query for an element handle.
     const btnReserve = yield page.waitForSelector('.btn-reserve');
     // Do something with element...
@@ -66,10 +67,10 @@ function delay(time) {
     }
     yield page.waitForSelector('#email-login');
     yield page.focus('#email-login');
-    yield page.keyboard.type('frontenddefi888@gmail.com', { delay: 10 });
+    yield page.keyboard.type(process.env.USERNAME || '', { delay: 10 });
     yield page.waitForSelector('#password-field-email');
     yield page.focus('#password-field-email');
-    yield page.keyboard.type('P@ssword123', { delay: 10 });
+    yield page.keyboard.type(process.env.PASSWORD || '', { delay: 10 });
     const btnLogin = yield page.waitForSelector('#login_email_btn');
     yield delay(1000);
     //   await page.setRequestInterception(true);
@@ -87,7 +88,7 @@ function delay(time) {
     //   console.log('getAccessToken', getAccessToken);
     const page2 = yield browser.newPage();
     //   // Go to your site
-    yield page2.goto(`https://www.theconcert.com/concert/2427/stage?queue=${getAccessToken}`);
+    yield page2.goto(`https://www.theconcert.com/concert/${process.env.ID_CONCERT}/stage?queue=${getAccessToken}`);
     let getZoneBuy = yield page2.waitForSelector('#zone-box > ul > li:nth-child(5)');
     console.log('getZoneBuy: ', getZoneBuy);
     if (getZoneBuy) {

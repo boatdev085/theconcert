@@ -1,6 +1,8 @@
 // Import puppeteer
 import axios from 'axios';
 import puppeteer from 'puppeteer';
+import dotenv from 'dotenv';
+dotenv.config();
 
 function delay(time: number) {
   return new Promise(function (resolve) {
@@ -10,7 +12,6 @@ function delay(time: number) {
 
 (async () => {
   // Launch the browser
-  console.log('start');
 
   //   const response = await axios.post(
   //     'https://www.theconcert.com/rest/users/login',
@@ -41,7 +42,9 @@ function delay(time: number) {
   const page = await browser.newPage();
 
   //   // Go to your site
-  await page.goto(`https://www.theconcert.com/concert/2427`);
+  await page.goto(
+    `https://www.theconcert.com/concert/${process.env.ID_CONCERT}`
+  );
 
   // Query for an element handle.
   const btnReserve = await page.waitForSelector('.btn-reserve');
@@ -65,11 +68,11 @@ function delay(time: number) {
 
   await page.waitForSelector('#email-login');
   await page.focus('#email-login');
-  await page.keyboard.type('frontenddefi888@gmail.com', { delay: 10 });
+  await page.keyboard.type(process.env.USERNAME || '', { delay: 10 });
 
   await page.waitForSelector('#password-field-email');
   await page.focus('#password-field-email');
-  await page.keyboard.type('P@ssword123', { delay: 10 });
+  await page.keyboard.type(process.env.PASSWORD || '', { delay: 10 });
   const btnLogin = await page.waitForSelector('#login_email_btn');
   await delay(1000);
   //   await page.setRequestInterception(true);
@@ -90,7 +93,7 @@ function delay(time: number) {
 
   //   // Go to your site
   await page2.goto(
-    `https://www.theconcert.com/concert/2427/stage?queue=${getAccessToken}`
+    `https://www.theconcert.com/concert/${process.env.ID_CONCERT}/stage?queue=${getAccessToken}`
   );
 
   let getZoneBuy = await page2.waitForSelector(
